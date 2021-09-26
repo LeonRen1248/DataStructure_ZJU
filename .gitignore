@@ -30,3 +30,6 @@
 *.exe
 *.out
 *.app
+
+# Add by Leon
+Lectures*

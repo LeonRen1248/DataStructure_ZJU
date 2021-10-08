@@ -3,7 +3,7 @@
 
 #include <ostream>
 
-#define MAX_ITEMS_NUM 100
+#define MAX_ITEMS_NUM 1000
 
 class SequentialList {
 public:
@@ -18,11 +18,12 @@ public:
     SequentialList & operator=(const SequentialList &sl);
 
     void make_empty() { last = -1; }
-    element_type find_kth(int k);
+    element_type find_kth(unsigned int k);
     int find_first(element_type x);
     int find_last(element_type x);
-    void insert(int idx, element_type x);
-    int get_len() { return last + 1; }
+    void insert(unsigned int idx, element_type x);
+    element_type remove(unsigned int idx);
+    unsigned int get_len() { return last + 1; }
 
 private:
     int last = -1;
@@ -115,7 +116,7 @@ inline bool SequentialList::element_num_check(int n) {
     return true;
 }
 
-inline SequentialList::element_type SequentialList::find_kth(int k) {
+inline SequentialList::element_type SequentialList::find_kth(unsigned int k) {
     if (k > last) {
         oops("Index out of boundary.");
         return 0;
@@ -137,7 +138,7 @@ inline int SequentialList::find_last(element_type x) {
     return -1; // Not found
 }
 
-inline void SequentialList::insert(int idx, element_type x) {
+inline void SequentialList::insert(unsigned int idx, element_type x) {
     if (last >= MAX_ITEMS_NUM - 1) {
         oops("This SequentialList is full.");
         return;
@@ -150,7 +151,20 @@ inline void SequentialList::insert(int idx, element_type x) {
         m_data[i + 1] = m_data[i];
     }
     m_data[idx] = x;
-    last++;
+    ++last;
+}
+
+inline SequentialList::element_type SequentialList::remove(unsigned int idx) {
+    if (idx > last + 1) {
+        oops("Index out of boundary.");
+        return 0;
+    }
+    element_type ret_value = m_data[idx];
+    for (int i = idx; i < last; i++) {
+        m_data[i] = m_data[i + 1];
+    }
+    --last;
+    return ret_value;
 }
 
 

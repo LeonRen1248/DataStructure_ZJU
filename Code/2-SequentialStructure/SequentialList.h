@@ -12,10 +12,10 @@ public:
     SequentialList();
     SequentialList(int num, element_type value);
     SequentialList(element_type *arr, int n);
-    SequentialList(const SequentialList &st);
+    SequentialList(const SequentialList &sl);
     ~SequentialList();
 
-    SequentialList & operator=(const SequentialList &st);
+    SequentialList & operator=(const SequentialList &sl);
 
     void make_empty() { last = -1; }
     element_type find_kth(int k);
@@ -32,7 +32,7 @@ private:
     bool element_num_check(int n);
 
     friend bool operator==(const SequentialList &st1, const SequentialList &st2);
-    friend std::ostream & operator<<(std::ostream &os, const SequentialList &st);
+    friend std::ostream & operator<<(std::ostream &os, const SequentialList &sl);
 };
 
 inline SequentialList::SequentialList() {
@@ -61,24 +61,24 @@ inline SequentialList::SequentialList(int *arr, int n) {
     last = n - 1;
 }
 
-inline SequentialList::SequentialList(const SequentialList &st) {
+inline SequentialList::SequentialList(const SequentialList &sl) {
     // SequentialList();
     m_data = new element_type[MAX_ITEMS_NUM];
-    for (int i = 0; i <= st.last; i++) {
-        m_data[i] = st.m_data[i];
+    for (int i = 0; i <= sl.last; i++) {
+        m_data[i] = sl.m_data[i];
     }
-    last = st.last;
+    last = sl.last;
 }
 
 inline SequentialList::~SequentialList() {
     delete[] m_data;
 }
 
-inline SequentialList & SequentialList::operator=(const SequentialList &st) {
+inline SequentialList & SequentialList::operator=(const SequentialList &sl) {
     m_data = new element_type[MAX_ITEMS_NUM];
-    last = st.last;
+    last = sl.last;
     for (int i = 0; i <= last; i++) {
-        m_data[i] = st.m_data[i];
+        m_data[i] = sl.m_data[i];
     }
     return *this;
 }
@@ -92,10 +92,10 @@ inline bool operator==(const SequentialList &st1, const SequentialList &st2) {
 }
 
 
-inline std::ostream & operator<<(std::ostream &os, const SequentialList &st) {
+inline std::ostream & operator<<(std::ostream &os, const SequentialList &sl) {
     os << "[ ";
-    for (int i = 0; i <= st.last; i++) {
-        os << st.m_data[i] << ", ";
+    for (int i = 0; i <= sl.last; i++) {
+        os << sl.m_data[i] << ", ";
     }
     os << "]";
     return os;

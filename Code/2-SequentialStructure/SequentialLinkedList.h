@@ -73,6 +73,7 @@ inline SequentialLinkedList::~SequentialLinkedList() {
 }
 
 inline SequentialLinkedList & SequentialLinkedList::operator=(const SequentialLinkedList &sll) {
+    free_list(m_list->next);
     m_len = sll.m_len;
     SLLNode *add_node = m_list, *node;
     for (SLLNode *p = sll.m_list->next; p != nullptr; p = p->next) {

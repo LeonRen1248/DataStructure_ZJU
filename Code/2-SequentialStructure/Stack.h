@@ -72,8 +72,7 @@ inline Stack::~Stack() {
 }
 
 inline Stack & Stack::operator=(const Stack &stk) {
-    free_stack(m_stack);
-    m_stack = new StackNode();
+    free_stack(m_stack->next);
     StackNode *p = m_stack, *node;
     for (StackNode *p2 = stk.m_stack->next; p2 != nullptr; p2 = p2->next) {
         node = new StackNode(p2->item);

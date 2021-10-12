@@ -5,31 +5,35 @@
 
 class SequentialLinkedList {
 public:
-    typedef int element_type;
+    using element_type = int;
+    using index_type = int;
+    using len_type = unsigned int;
+
     typedef struct SLLNode {
         element_type data;
         struct SLLNode *next;
-        SLLNode() : data(0), next(nullptr) { ; }
-        SLLNode(element_type _data) : data(_data), next(nullptr) { ; }
+        SLLNode() : data(0), next(nullptr) { }
+        explicit SLLNode(element_type _data) : data(_data), next(nullptr) { }
     }SLLNode;
 
-    SequentialLinkedList() : m_len(0), m_list(new SLLNode(0)) { ; }
-    SequentialLinkedList(int num, element_type value);
+    SequentialLinkedList() : m_len(0), m_list(new SLLNode(0)) { }
+    SequentialLinkedList(len_type num, element_type value);
     SequentialLinkedList(const SequentialLinkedList &sll);
-    SequentialLinkedList(element_type *arr, int num);
+    SequentialLinkedList(element_type *arr, len_type num);
     ~SequentialLinkedList();
 
     SequentialLinkedList & operator=(const SequentialLinkedList &sll);
+    element_type operator[](index_type idx);
 
     void make_empty();
-    element_type find_kth(unsigned int k);
-    int find_first(element_type x);
-    void insert(unsigned int idx, element_type x);
-    element_type remove(unsigned int idx);
-    unsigned int get_len() { return m_len; }
+    // element_type operator[](index_type k);
+    index_type find_first(element_type x);
+    void insert(index_type idx, element_type x);
+    element_type remove(index_type idx);
+    len_type get_len() { return m_len; }
 
 private:
-    unsigned int m_len;
+    len_type m_len;
     SLLNode *m_list; // 附加头节点的链表结构
 
     void free_list(SLLNode *sll);
@@ -38,11 +42,11 @@ private:
     friend std::ostream & operator<<(std::ostream &os, const SequentialLinkedList &sll);
 };
 
-inline SequentialLinkedList::SequentialLinkedList(int num, element_type value)
+inline SequentialLinkedList::SequentialLinkedList(len_type num, element_type value)
         : m_len(num), m_list(new SLLNode(0)) {
     SLLNode *p = m_list, *node;
-    for (int i = 0; i < num; i++) {
-        node = new SLLNode(num);
+    for (index_type i = 0; i < num; i++) {
+        node = new SLLNode(value);
         p->next = node;
         p = p->next;
     }
@@ -58,10 +62,10 @@ inline SequentialLinkedList::SequentialLinkedList(const SequentialLinkedList &sl
     }
 }
 
-inline SequentialLinkedList::SequentialLinkedList(element_type *arr, int num)
+inline SequentialLinkedList::SequentialLinkedList(element_type *arr, len_type num)
         : m_len(num), m_list(new SLLNode(0)) {
     SLLNode *p = m_list, *node;
-    for (int i = 0; i < num; i++) {
+    for (index_type i = 0; i < num; i++) {
         node = new SLLNode(arr[i]);
         p->next = node;
         p = p->next;
@@ -73,6 +77,7 @@ inline SequentialLinkedList::~SequentialLinkedList() {
 }
 
 inline SequentialLinkedList & SequentialLinkedList::operator=(const SequentialLinkedList &sll) {
+    if (this == &sll) return *this;
     free_list(m_list->next);
     m_len = sll.m_len;
     SLLNode *add_node = m_list, *node;
@@ -100,19 +105,19 @@ inline void SequentialLinkedList::make_empty() {
     free_list(node);
 }
 
-inline SequentialLinkedList::element_type SequentialLinkedList::find_kth(unsigned int k) {
-    if (k >= m_len) { // k是unsigned int类型，不需要检查 "<0" 的部分
+inline SequentialLinkedList::element_type SequentialLinkedList::operator[](index_type idx) {
+    if (idx >= m_len || idx < 0) {
         oops("ERROR: Index out of boundary.");
-        return 0;
+        return -1;
     }
     SLLNode *p = m_list->next;
-    for (int i = 0; i < k; i++) {
+    for (index_type i = 0; i < idx; i++) {
         p = p->next;
     }
     return p->data;
 }
 
-inline int SequentialLinkedList::find_first(element_type x) {
+inline SequentialLinkedList::index_type SequentialLinkedList::find_first(element_type x) {
     int idx = 0;
     for (SLLNode *p = m_list->next; p != nullptr; p = p->next) {
         if (p->data == x) {
@@ -123,12 +128,13 @@ inline int SequentialLinkedList::find_first(element_type x) {
     return -1; // Not Found
 }
 
-inline void SequentialLinkedList::insert(unsigned int idx, element_type x) {
-    if (idx > m_len) {
+inline void SequentialLinkedList::insert(index_type idx, element_type x) {
+    if (idx > m_len || idx < 0) {
         oops("ERROR: Index out of boundary.");
+        return;
     }
     SLLNode *p = m_list;
-    for (int i = 0; i < idx; i++) {
+    for (index_type i = 0; i < idx; i++) {
         p = p->next;
     }
     SLLNode *p_next = p->next, *node = new SLLNode(x);
@@ -137,13 +143,13 @@ inline void SequentialLinkedList::insert(unsigned int idx, element_type x) {
     ++m_len;
 }
 
-inline SequentialLinkedList::element_type SequentialLinkedList::remove(unsigned int idx) {
-    if (idx >= m_len) {
+inline SequentialLinkedList::element_type SequentialLinkedList::remove(index_type idx) {
+    if (idx >= m_len || idx < 0) {
         oops("ERROR: Index out of boundary.");
-        return 0;
+        return -1;
     }
     SLLNode *p = m_list;
-    for (int i = 0; i < idx; i++) {
+    for (index_type i = 0; i < idx; i++) {
         p = p->next;
     }
     SLLNode *removed_node = p->next;

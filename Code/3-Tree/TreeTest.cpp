@@ -27,7 +27,7 @@ int main(int argc, char const *argv[]) {
     tree3 = tree;
     cout << tree3 << endl; // [ 1, 2, 4, 8, 5, 9, 3, 6, 7, ]
 
-    //
+    // The structure of `tree3` is as follows.
     //          1
     //       /    \
     //      2      3

@@ -43,7 +43,6 @@ private:
     void pre_order_traversal(TreeNode *tn, void (*fp)(element_type item)) const;
     void in_order_traversal(TreeNode *tn, void (*fp)(element_type item)) const;
     void post_order_traversal(TreeNode *tn, void (*fp)(element_type item)) const;
-    void level_order_traversal(TreeNode *tn, void (*fp)(element_type item)) const;
 
     friend std::ostream & operator<<(std::ostream &os, const Tree &tree);
 
@@ -161,6 +160,23 @@ inline void Tree::post_order_traversal(TreeNode *tn, void (*fp)(element_type ite
     post_order_traversal(tn->left, fp);
     post_order_traversal(tn->right, fp);
     fp(tn->item);
+}
+
+inline void Tree::level_order_traversal(void (*fp)(element_type item)) const {
+    std::queue<TreeNode *> node_queue;
+    node_queue.push(tree);
+    TreeNode *node;
+    while (!node_queue.empty()) {
+        node = node_queue.front();
+        node_queue.pop();
+        fp(node->item);
+        if (node->left) {
+            node_queue.push(node->left);
+        }
+        if (node->right) {
+            node_queue.push(node->right);
+        }
+    }
 }
 
 inline void Tree::delete_tree(TreeNode *tn) {

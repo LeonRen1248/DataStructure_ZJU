@@ -27,9 +27,31 @@ int main(int argc, char const *argv[]) {
     tree3 = tree;
     cout << tree3 << endl; // [ 1, 2, 4, 8, 5, 9, 3, 6, 7, ]
 
-    tree3.pre_order_traversal(print_node); cout << endl;
-    tree3.in_order_traversal(print_node); cout << endl;
-    tree3.post_order_traversal(print_node); cout << endl;
+    //
+    //          1
+    //       /    \
+    //      2      3
+    //    /  \   /  \
+    //   4    5 6    7
+    //  /\   /
+    //    8 9
+    cout << "Pre Order: ";
+    tree3.pre_order_traversal(print_node);
+    cout << endl; // Pre Order: 1, 2, 4, 8, 5, 9, 3, 6, 7, 
+
+    cout << "In Order: ";
+    tree3.in_order_traversal(print_node);
+    cout << endl; // In Order: 4, 8, 2, 9, 5, 1, 6, 3, 7, 
+
+    cout << "Post Order: ";
+    tree3.post_order_traversal(print_node);
+    cout << endl; // Post Order: 8, 4, 9, 5, 2, 6, 7, 3, 1, 
+
+    cout << "Level Order: ";
+    tree3.level_order_traversal(print_node);
+    cout << endl; // Level Order: 1, 2, 3, 4, 5, 6, 7, 8, 9, 
+
+    cout << (tree3.is_empty() ? "true" : "false") << endl; // false
     
     return 0;
 }

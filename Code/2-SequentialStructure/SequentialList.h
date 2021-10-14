@@ -21,22 +21,22 @@ public:
     ~SequentialList();
 
     SequentialList & operator=(const SequentialList &sl);
-    element_type operator[](index_type idx);
+    element_type operator[](index_type idx) const;
 
     void make_empty() { last = -1; }
     // element_type find_kth(index_type k); // 用下标运算符重载代替
-    index_type find_first(element_type x);
-    index_type find_last(element_type x);
+    index_type find_first(element_type x) const;
+    index_type find_last(element_type x) const;
     void insert(index_type idx, element_type x);
     element_type remove(index_type idx);
-    len_type get_len() { return last + 1; }
+    len_type get_len() const { return last + 1; }
 
 private:
     index_type last = -1;
     element_type *m_data;
 
-    void oops(const char *str);
-    bool element_num_check(index_type n);
+    void oops(const char *str) const;
+    bool element_num_check(index_type n) const;
     void init_sl();
 
     friend bool operator==(const SequentialList &st1, const SequentialList &st2);
@@ -103,7 +103,7 @@ inline bool operator==(const SequentialList &st1, const SequentialList &st2) {
     return true;
 }
 
-inline SequentialList::element_type SequentialList::operator[](index_type idx) {
+inline SequentialList::element_type SequentialList::operator[](index_type idx) const {
     if (idx > last || idx < 0) {
         oops("Index out of boundary.");
         return -1;
@@ -122,11 +122,11 @@ inline std::ostream & operator<<(std::ostream &os, const SequentialList &sl) {
 
 #include <iostream>
 
-inline void SequentialList::oops(const char *str) {
+inline void SequentialList::oops(const char *str) const {
     std::cout << str << std::endl;
 }
 
-inline bool SequentialList::element_num_check(index_type n) {
+inline bool SequentialList::element_num_check(index_type n) const {
     if (n > MAX_ITEMS_NUM) {
         oops("You want to insert too many elements. Try less.");
         return false;
@@ -134,14 +134,14 @@ inline bool SequentialList::element_num_check(index_type n) {
     return true;
 }
 
-inline SequentialList::index_type SequentialList::find_first(element_type x) {
+inline SequentialList::index_type SequentialList::find_first(element_type x) const {
     for (index_type i = 0; i <= last; i++) {
         if (x == m_data[i]) return i;
     }
     return -1; // Not found
 }
 
-inline SequentialList::index_type SequentialList::find_last(element_type x) {
+inline SequentialList::index_type SequentialList::find_last(element_type x) const {
     for (index_type i = last; i >= 0; i--) {
         if (x == m_data[i]) return i;
     }

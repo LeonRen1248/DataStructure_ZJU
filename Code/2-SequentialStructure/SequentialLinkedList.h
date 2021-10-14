@@ -23,21 +23,21 @@ public:
     ~SequentialLinkedList();
 
     SequentialLinkedList & operator=(const SequentialLinkedList &sll);
-    element_type operator[](index_type idx);
+    element_type operator[](index_type idx) const;
 
     void make_empty();
     // element_type operator[](index_type k);
-    index_type find_first(element_type x);
+    index_type find_first(element_type x) const;
     void insert(index_type idx, element_type x);
     element_type remove(index_type idx);
-    len_type get_len() { return m_len; }
+    len_type get_len() const { return m_len; }
 
 private:
     len_type m_len;
     SLLNode *m_list; // 附加头节点的链表结构
 
-    void free_list(SLLNode *sll);
-    void oops(const char *str);
+    void free_list(SLLNode *sll) const;
+    void oops(const char *str) const;
 
     friend std::ostream & operator<<(std::ostream &os, const SequentialLinkedList &sll);
 };
@@ -105,7 +105,7 @@ inline void SequentialLinkedList::make_empty() {
     free_list(node);
 }
 
-inline SequentialLinkedList::element_type SequentialLinkedList::operator[](index_type idx) {
+inline SequentialLinkedList::element_type SequentialLinkedList::operator[](index_type idx) const {
     if (idx >= m_len || idx < 0) {
         oops("ERROR: Index out of boundary.");
         return -1;
@@ -117,7 +117,7 @@ inline SequentialLinkedList::element_type SequentialLinkedList::operator[](index
     return p->data;
 }
 
-inline SequentialLinkedList::index_type SequentialLinkedList::find_first(element_type x) {
+inline SequentialLinkedList::index_type SequentialLinkedList::find_first(element_type x) const {
     int idx = 0;
     for (SLLNode *p = m_list->next; p != nullptr; p = p->next) {
         if (p->data == x) {
@@ -163,11 +163,11 @@ inline SequentialLinkedList::element_type SequentialLinkedList::remove(index_typ
 
 #include <iostream>
 
-inline void SequentialLinkedList::oops(const char *str) {
+inline void SequentialLinkedList::oops(const char *str) const {
     std::cout << str << std::endl;
 }
 
-inline void SequentialLinkedList::free_list(SLLNode *sll) {
+inline void SequentialLinkedList::free_list(SLLNode *sll) const {
     if (sll) {
         SLLNode *curr = sll;
         for (SLLNode *after = curr->next; after != nullptr; curr = after, after = after->next) {
